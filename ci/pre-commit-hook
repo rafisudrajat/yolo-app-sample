@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Get the list of new or modified Python files
+files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$')
+
+# Check if there are any Python files to process
+if [ -n "$files" ]; then
+  echo "Formatting Python files with autopep8..."
+  # Process each file
+  echo "$files" | while IFS= read -r file; do
+    # Apply autopep8 formatting
+    autopep8 --in-place --aggressive "$file"
+    # Add the formatted file back to the staging area
+    git add "$file"
+  done
+else
+  echo "No Python files to format."
+fi
+
+# Exit with success
+exit 0
