@@ -1,6 +1,5 @@
 from ultralytics import YOLO
 import argparse
-from PIL import Image
 
 
 # Load a pretrained YOLOv8n model
@@ -35,13 +34,12 @@ def main():
     # Parse the arguments
     args = parser.parse_args()
     if args.mode == "img_inference":
-        # Check if output_image is an empty string and set it to None
         if args.output_image == "" or args.output_image is None:
             image_inference(args.filename, args.save_image)
         else:
             image_inference(args.filename, args.save_image, args.output_image)
     elif args.mode == "video_inference":
-        results = model.track(
+        model.track(
             args.filename,
             show=True,
             tracker="bytetrack.yaml")
@@ -52,7 +50,7 @@ def image_inference(img_path: str, save_image: bool = False,
     # Run inference on the source
     results = model(img_path)  # list of Results objects
     # Visualize the results
-    for i, r in enumerate(results):
+    for _, r in enumerate(results):
         # Show results to screen (in supported environments)
         r.show()
 
